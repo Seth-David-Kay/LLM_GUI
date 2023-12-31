@@ -22,6 +22,7 @@ class ChatApp:
 
         # Create the chat history display
         self.chat_history = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=50, height=20, bg="#343540", fg="white", relief=tk.FLAT, highlightbackground="#343540", highlightcolor="#343540")
+        self.chat_history.config(font="Arial, 15")
         self.chat_history.pack(expand=True, fill=tk.BOTH, padx=0, pady=0)
         self.chat_history.config(state="disabled")
 
@@ -31,6 +32,7 @@ class ChatApp:
 
         # Create the input box
         self.input_box = tk.Entry(input_frame, width=40, relief=tk.FLAT, bg="#343540", fg="white", highlightbackground="#797979", highlightcolor="#797979")
+        self.input_box.bind('<Return>', self.enter_submit_message)
         self.input_box.pack(side=tk.LEFT, padx=(0, 5))
 
         # Create the submit button
@@ -43,6 +45,9 @@ class ChatApp:
     def on_closing(self):
         self.root.destroy()
         exit()
+
+    def enter_submit_message(self, event):
+        self.submit_message()
 
     def submit_message(self):
         # Start animation
@@ -58,7 +63,7 @@ class ChatApp:
             self.update_chat_history(f"{settings.model}: {response}\n")
 
             if message.strip().lower() == "bye" or message.strip().lower() == "bye!":
-                time.sleep(2)
+                time.sleep(3)
                 self.on_closing()
 
     def update_chat_history(self, message):
