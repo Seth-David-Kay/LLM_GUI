@@ -1,8 +1,9 @@
 import tkinter as tk
+import llama_chat_gui as chat
 
 global model
 # For now just use llama2 as model always
-model = "llama2"
+model = "llava"
 
 global model_options
 
@@ -10,18 +11,21 @@ def save_state():
 	# Read from file what saved models were, model settings, and more
 	return
 
-def create_settings():
+def create_settings(root):
+	global model_options
 
 	# Using grid layout to pack all below
 
 	window = tk.Tk()
 	# Center the window
-	window_width = 600
-	window_height = 600
+	window_width = 300
+	window_height = 300
 	screen_width = window.winfo_screenwidth()
 	screen_height = window.winfo_screenheight()
-	x_coordinate = int((screen_width/2) - window_width/2)
-	y_coordinate = int((screen_height/2) - window_height/2)
+	# x_coordinate = int((screen_width/2) - window_width/2)
+	# y_coordinate = int((screen_height/2) - window_height/2)
+	x_coordinate = root.winfo_x()
+	y_coordinate = root.winfo_y()
 	window.geometry("{}x{}+{}+{}".format(window_width, window_height, x_coordinate, y_coordinate))
 	window.title("Ollama Settings")
 
@@ -52,6 +56,7 @@ def create_settings():
 		new_model_button = model_var.get()
 		greetings.configure(text="Chat with " + new_model_button)
 		model = new_model_button
+		chat.update_model(root)
 
 	model_change_button = tk.Button(settings, text="OK", command=model_change)
 
