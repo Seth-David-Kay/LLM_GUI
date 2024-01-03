@@ -3,7 +3,7 @@ import llama_chat_gui as chat
 
 global model
 # For now just use llama2 as model always
-model = "llava"
+model = "llama2"
 
 global model_options
 
@@ -13,6 +13,7 @@ def save_state():
 
 def create_settings(root):
 	global model_options
+	global model
 
 	# Using grid layout to pack all below
 
@@ -36,8 +37,6 @@ def create_settings(root):
 	window.grid_rowconfigure(0, weight = 1)
 	window.grid_columnconfigure(0, weight=1)
 
-	model = "llama2"
-
 	model_options = ["llama2", "llava"]
 
 	greetings = tk.Label(settings, text="Chat with " + model)
@@ -46,7 +45,12 @@ def create_settings(root):
 	# Choose model, put this in menu bar/settings page
 	model_choice = tk.Label(settings, text="Choose your model or input your own")
 	model_var = tk.StringVar(settings)
-	model_var.set(model_options[0]) # Default value
+	if (str(model).lower().strip() == "llama2"):
+		model_var.set(model_options[0])
+	elif (str(model).lower().strip() == "llava"):
+		model_var.set(model_options[1])
+	else:
+		model_var.set(model_options[0]) # Default value
 	global model_dropdown
 	model_dropdown = tk.OptionMenu(settings, model_var, *model_options)
 
@@ -56,7 +60,8 @@ def create_settings(root):
 		new_model_button = model_var.get()
 		greetings.configure(text="Chat with " + new_model_button)
 		model = new_model_button
-		chat.update_model(root)
+		window.destroy() # Destroy this settings window
+		chat.update_model(root, window)
 
 	model_change_button = tk.Button(settings, text="OK", command=model_change)
 

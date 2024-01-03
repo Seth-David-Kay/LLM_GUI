@@ -120,7 +120,12 @@ if __name__ == "__main__":
     app = ChatApp(root)
     root.mainloop()
 
-def update_model(root):
-    root.title(f"{settings.model} chat")
+# Make less jolty and more efficient
+def update_model(root, settings):
+    root.destroy()
+    root = tk.Tk()
+    app = ChatApp(root)
+    root.mainloop()
+    # Spawn settings back in? But without it it's fine
 
 ## Add increase text size functionality
