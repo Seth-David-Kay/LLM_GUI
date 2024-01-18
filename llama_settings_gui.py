@@ -3,7 +3,7 @@ import llama_chat_gui as chat
 
 global model
 # For now just use llama2 as model always
-model = "llama2"
+model = "dynamically chosen models" # DEFAULT MODEL VALUE
 
 global model_options
 
@@ -37,20 +37,22 @@ def create_settings(root):
 	window.grid_rowconfigure(0, weight = 1)
 	window.grid_columnconfigure(0, weight=1)
 
-	model_options = ["llama2", "llava"]
+	model_options = ["llama2", "llava", "dynamically chosen models"]
 
 	greetings = tk.Label(settings, text="Chat with " + model)
 	greetings.grid(row=0, column=0, columnspan=2)
 
 	# Choose model, put this in menu bar/settings page
-	model_choice = tk.Label(settings, text="Choose your model or input your own")
+	model_choice = tk.Label(settings, text="Choose a model or input your own")
 	model_var = tk.StringVar(settings)
 	if (str(model).lower().strip() == "llama2"):
 		model_var.set(model_options[0])
 	elif (str(model).lower().strip() == "llava"):
 		model_var.set(model_options[1])
+	elif (str(model).lower().strip() == "dynamically chosen models"):
+		model_var.set(model_options[2])
 	else:
-		model_var.set(model_options[0]) # Default value
+		model_var.set(model_options[2]) # Default value, if input not recognized choose this
 	global model_dropdown
 	model_dropdown = tk.OptionMenu(settings, model_var, *model_options)
 

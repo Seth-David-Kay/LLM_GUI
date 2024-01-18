@@ -1,15 +1,31 @@
 import requests
 import json
 import base64
+import llama_chat_gui as chat
+import llama_settings_gui as settings
 
 def choose_model_generate_response(prompt, model, image):
-    pure_model = str(model).strip().lower()
-    if (pure_model == "llama2" or pure_model == "llama"):
-        return generate_full_reponse_llama2(prompt)
-    if (pure_model == "llava" and image != ""):
-        return generate_full_reponse_llava(prompt, image)
-    if(pure_model == "llava" and image == ""):
-        return("No image selected. Llava requires an image selection")
+    # If the chat is dynamic, see if there is an image and choose model accordingly
+    if settings.model.strip().lower() == "dynamically chosen models":
+        # If image is nothing, generate llama2 response
+        if (image == ""):
+            # Update model name in settings to display correctly -- change later to one name?
+            settings.model = "dynamically chosen models"
+            return generate_full_reponse_llama2(prompt)
+        # Else, image has to be something, so generate llava response
+        else:
+            # Update model name in settings to display correctly -- change later to one name?
+            settings.model = "dynamically chosen models"
+            return generate_full_reponse_llava(prompt, image)
+    # If the chat is not dynamic, use user's preferences
+    else:
+        pure_model = str(model).strip().lower()
+        if (pure_model == "llama2" or pure_model == "llama"):
+            return generate_full_reponse_llama2(prompt)
+        if (pure_model == "llava" and image != ""):
+            return generate_full_reponse_llava(prompt, image)
+        if(pure_model == "llava" and image == ""):
+            return("No image selected. Llava requires an image selection")
 
 def generate_full_reponse_llama2(prompt):
     r = requests.post('http://0.0.0.0:11434/api/generate',

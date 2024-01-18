@@ -16,3 +16,5 @@
  Add loading response animation
  Add threading so no wheel of doom plays but animation does
  Add a reset file button -- a little x next to each file selected that will remove it
+
+ Create a seperate dynamic gui -- if image, llava, if text, llama2

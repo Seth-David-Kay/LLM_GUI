@@ -8,6 +8,7 @@ from tkinter import filedialog as fd
 import os
 
 class ChatApp:
+
     def __init__(self, root):
 
         global attachment_filename
@@ -50,7 +51,7 @@ class ChatApp:
         self.settings_button.pack(side=tk.LEFT, padx=(0, 5))
 
         # Create attachments dropdown and label
-        if (str(settings.model).strip().lower() == "llava"):
+        if (str(settings.model).strip().lower() == "llava") or (str(settings.model).strip().lower() == "dynamically chosen models"):
             # Create the attatchments button
             self.attatchment_button = tk.Button(input_frame, text="Attatchments", command=self.select_file, relief=tk.FLAT, bg="#797979", fg="#343540", highlightbackground="#343540", highlightcolor="#343540", activeforeground="#343540", activebackground="#343540", background="#343540", foreground="#343540", disabledforeground="#343540")
             self.attatchment_button.pack(side=tk.RIGHT)
@@ -83,6 +84,11 @@ class ChatApp:
         else:
             self.attatchment_label.configure(text="No file selected")
 
+    def reset_file_selection(self):
+        global attachment_filename
+        attachment_filename = ""
+        self.attatchment_label.configure(text="No file selected")
+
     def enter_submit_message(self, event):
         self.submit_message()
 
@@ -98,7 +104,14 @@ class ChatApp:
 
             # Gather response
             response = llama.choose_model_generate_response(message, settings.model, attachment_filename)
-            self.update_chat_history(f"{settings.model}: {response}\n")
+            if (settings.model.strip().lower() == "dynamically chosen models"): # If it's a dynamic model, print out dynam as its name
+                self.update_chat_history(f"Dynam: {response}\n")
+            else: # If it's any other model, just call it the model's name
+                self.update_chat_history(f"{settings.model}: {response}\n")
+            
+            # If there is an image that just went through, reset the file selection
+            if (attachment_filename != ""):
+                self.reset_file_selection()
 
             if message.strip().lower() == "bye" or message.strip().lower() == "bye!":
                 time.sleep(3)
