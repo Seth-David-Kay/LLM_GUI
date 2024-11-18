@@ -1,5 +1,13 @@
 # LLM_GUI
- Creating a local chat bot
+A dynamic local chat bot! Motimodal and custom model support for all of your local AI needs!
+Fast, accurate, and fully customazable interface!
+
+# Features
+- See text at once or as it comes in
+- Custom model sppport
+- Multimodel context built in
+- Automatic dyanmic model and model mode switching based on input context
+- Attachment interface for local and custom models
 
 
 # TO DOS
